@@ -1,14 +1,13 @@
 # Low Priority Thread
-![CI](https://github.com/hinto-janai/lpt/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/hinto-janai/lpt/actions/workflows/ci.yml/badge.svg) [![crates.io](https://img.shields.io/crates/v/lpt.svg)](https://crates.io/crates/lpt) [![docs.rs](https://docs.rs/lpt/badge.svg)](https://docs.rs/lpt)
 
 This is a 1-function crate that sets the calling thread's priority to the lowest platform-specific value possible.
 
 ```rust
-let result: Result<(), ()> = lpt::lpt();
-
-if result.is_ok() {
-	println!("successfully set current thread to lowest possible priority");
-}
+// Set the current thread to the lowest priority.
+//
+// This function returns () and will never fail.
+lpt::lpt();
 ```
 
 ## Windows

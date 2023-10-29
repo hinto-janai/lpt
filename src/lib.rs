@@ -3,29 +3,30 @@
 
 #[inline]
 #[cfg(target_os = "windows")]
-pub fn lpt() -> Result<(), ()> {
+/// Set the calling thread to the lowest possible priority
+///
+/// This function will never fail.
+/// ```
+pub fn lpt() {
 	use windows::Win32::System::Threading::*;
 
 	// SAFETY: calling C.
-	unsafe {
-		match SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_IDLE) {
-			Ok(_)  => Ok(()),
-			Err(_) => Err(()),
-		}
-	}
+	//
+	// We are _lowering_ our priority, not increasing, so this function should never fail.
+	unsafe { SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_IDLE) };
 }
 
 #[inline]
 #[cfg(target_family = "unix")]
-pub fn lpt() -> Result<(), ()> {
+/// Set the calling thread to the lowest possible priority
+///
+/// This function will never fail.
+/// ```
+pub fn lpt() {
 	const NICE_MAX: libc::c_int = if cfg!(target_os = "linux") { 19 } else { 20 };
 
 	// SAFETY: calling C.
-	unsafe {
-		if libc::nice(NICE_MAX) != -1 {
-			Ok(())
-		} else {
-			Err(())
-		}
-	}
+	//
+	// We are _lowering_ our priority, not increasing, so this function should never fail.
+	unsafe { libc::nice(NICE_MAX) };
 }
